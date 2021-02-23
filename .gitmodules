@@ -1,0 +1,3 @@
+[submodule "libcarbon"]
+	path = libcarbon
+	url = https://github.com/30c27b/libcarbon.git
