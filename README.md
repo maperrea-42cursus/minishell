@@ -2,7 +2,7 @@
 Creating a simple shell.
 
 ## Description
-`minishell` is a project part of the cursus at [42](https://42.fr).
+The `minishell` project is part of the cursus at [42](https://42.fr). Its scope is to teach us about files, i/o and processes. The objective is to create a basic bash-like shell with features like redirections, pipes, signals, environement variables, builtins, etc.
 
 ## Authors
 * [Matthis Perreaux](https://github.com/maperrea) (maperrea)
