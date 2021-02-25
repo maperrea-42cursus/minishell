@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh.h                                              :+:      :+:    :+:   */
+/*   reader.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/23 12:59:55 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/02/25 11:19:18 by ancoulon         ###   ########.fr       */
+/*   Created: 2021/02/24 14:22:40 by ancoulon          #+#    #+#             */
+/*   Updated: 2021/02/24 14:23:36 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MSH_H
-# define MSH_H
+#ifndef READER_H
+# define READER_H
 
-#include "msh/reader.h"
-#include "msh/parser.h"
+#define MSH_BUFFSIZE 1024
+
+char	*msh_read(void);
 
 #endif

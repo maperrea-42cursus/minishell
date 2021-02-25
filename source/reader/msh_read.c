@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh.h                                              :+:      :+:    :+:   */
+/*   msh_read.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/23 12:59:55 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/02/25 11:19:18 by ancoulon         ###   ########.fr       */
+/*   Created: 2021/02/24 14:19:04 by ancoulon          #+#    #+#             */
+/*   Updated: 2021/02/25 11:17:55 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MSH_H
-# define MSH_H
-
 #include "msh/reader.h"
-#include "msh/parser.h"
 
-#endif
+#include "carbon/mem.h"
+
+char*
+	msh_read(void)
+{
+	char	*buffer;
+
+	buffer = mem_calloc(sizeof(char) * MSH_BUFFSIZE);
+	if (!buffer)
+		return (NULL);
+}
