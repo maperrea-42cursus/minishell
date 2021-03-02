@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reader.h                                           :+:      :+:    :+:   */
+/*   msh_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/24 14:22:40 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/02/24 14:23:36 by ancoulon         ###   ########.fr       */
+/*   Created: 2021/03/02 10:54:59 by ancoulon          #+#    #+#             */
+/*   Updated: 2021/03/02 11:54:59 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef READER_H
-# define READER_H
+#include "msh/shared.h"
 
-#define MSH_BUFFSIZE 1024
+#include "carbon/fmt.h"
 
-char	*msh_read(void);
+#include <stdlib.h>
+#include <stdio.h>
 
-#endif
+void	msh_exit(int code, char *msg)
+{
+	if (!code)
+		fmt_fprintln(2, msg);
+	else
+		fmt_println(msg);
+	exit(code);
+}

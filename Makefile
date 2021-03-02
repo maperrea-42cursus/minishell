@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/23 13:11:31 by ancoulon          #+#    #+#              #
-#    Updated: 2021/02/23 13:41:30 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/03/02 11:09:19 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ CC			= clang
 CFLAGS		= -Wall -Wextra -Werror \
 				-I./include -I./$(LIBDIR)/include \
 
-SRCS		= $(wildcard source/*.c)
+SRCS		= $(wildcard source/*.c) \
+				$(wildcard source/*/*.c)
 OBJS		= $(SRCS:.c=.o)
 
 all:		$(NAME)
