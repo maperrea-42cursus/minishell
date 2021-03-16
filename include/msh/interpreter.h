@@ -6,7 +6,7 @@
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:24:40 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/03/16 15:26:13 by ancoulon         ###   ########.fr       */
+/*   Updated: 2021/03/16 16:32:20 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include "msh/parser.h"
 
-int	msh_interpreter(t_input *input);
+int	msh_interpreter(t_llst *cmds);
 
 #endif
