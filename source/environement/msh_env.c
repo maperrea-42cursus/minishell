@@ -1,0 +1,71 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   msh_env.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/16 11:03:24 by ancoulon          #+#    #+#             */
+/*   Updated: 2021/03/16 11:38:28 by ancoulon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "msh/environement.h"
+
+#include "msh/shared.h"
+#include "carbon/mem.h"
+#include "carbon/str.h"
+#include "carbon/llst.h"
+#include <stdio.h>
+
+t_llst	*g_msh_env = NULL;
+
+static t_env	*env_new(void)
+{
+	t_env	*entry;
+
+	entry = mem_calloc(sizeof(t_env));
+	if (!entry)
+		msh_exit(1, "nomem");
+	return (entry);
+}
+
+void	msh_env(char **envp)
+{
+	size_t	i;
+	size_t	key_len;
+	t_env	*entry;
+	t_llst	*node;
+
+	i = 0;
+	while (envp[i])
+	{
+		entry = env_new();
+		key_len = 0;
+		while (envp[i][key_len] != '=')
+			key_len++;
+		entry->key = str_sub(envp[i], 0, key_len);
+		if (!entry->key)
+			msh_exit(1, "nomem");
+		entry->def = str_sub(envp[i], key_len + 1, str_len(envp[i]));
+		if (!entry->def)
+			msh_exit(1, "nomem");
+		node = llst_new(entry);
+		if (!node)
+			msh_exit(1, "nomem");
+		llst_push(&g_msh_env, node);
+		i++;
+	}
+}
+
+void	env_print(void)
+{
+	t_llst	*node;
+
+	node = g_msh_env;
+	while (node)
+	{
+		printf("%s = %s\n", ((t_env *)node->data)->key, ((t_env *)node->data)->def);
+		node = node->next;
+	}
+}
