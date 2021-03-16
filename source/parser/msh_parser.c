@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   msh_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:04:19 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/03/16 11:38:05 by ancoulon         ###   ########.fr       */
+/*   Updated: 2021/03/16 16:40:48 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "msh/parser.h"
 
-t_input*
-	msh_parse(char *line)
+t_llst	*msh_parse(char *line)
 {
 	(void)line;
 	return (NULL);
