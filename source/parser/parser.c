@@ -6,14 +6,15 @@
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:04:19 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/03/02 11:09:36 by ancoulon         ###   ########.fr       */
+/*   Updated: 2021/03/16 11:38:05 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "msh/parser.h"
 
-void
+t_input*
 	msh_parse(char *line)
 {
 	(void)line;
+	return (NULL);
 }

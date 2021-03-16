@@ -6,7 +6,7 @@
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:03:25 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/02/25 14:50:09 by ancoulon         ###   ########.fr       */
+/*   Updated: 2021/03/16 10:59:16 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ typedef struct	s_token
 typedef struct	s_cmd
 {
 	t_llst	tokens;
+	int		in_fd;
+	int		out_fd;
+	int		append;
 }				t_cmd;
 
 typedef struct	s_input
@@ -37,6 +40,6 @@ typedef struct	s_input
 	t_llst	*cmds;
 }				t_input;
 
-void	msh_parse(char *line);
+t_input			*msh_parse(char *line);
 
 #endif
