@@ -6,7 +6,7 @@
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 13:01:06 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/03/17 16:01:48 by ancoulon         ###   ########.fr       */
+/*   Updated: 2021/03/17 16:08:07 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ int
 		{
 			status = 0;
 			fmt_println(line);
+		}
+		else if (!str_cmp(line, "interp"))
+		{
+			status = 0;
+			fmt_println("");
+			msh_interpreter(NULL);
 		}
 		else
 		{
