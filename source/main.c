@@ -6,13 +6,14 @@
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 13:01:06 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/03/16 16:06:50 by ancoulon         ###   ########.fr       */
+/*   Updated: 2021/03/17 16:01:48 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "msh.h"
 
 #include "carbon.h"
+#include <stdio.h>
 
 int
 	main(int argc, char **argv, char **envp)
@@ -24,6 +25,13 @@ int
 	(void)argv;
 	msh_env(envp);
 	env_print();
+	printf("--------------------------------\n");
+	char ** envp2 = msh_env_all();
+	while(*envp2)
+	{
+		printf("%s\n", *envp2);
+		envp2++;
+	}
 	status = 1;
 	while (status)
 	{
