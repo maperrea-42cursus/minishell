@@ -6,13 +6,13 @@
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:04:19 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/03/18 15:56:25 by ancoulon         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:56:40 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "msh/parser.h"
 
-int	msh_parse(char *line, t_llst **cmds);
+int	msh_parse(char *line, t_llst **cmds)
 {
 	(void)line;
 	(void)cmds;
