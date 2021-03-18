@@ -3,3 +3,4 @@ minishell
 *.out
 *~
 *.DS_Store
+*.swp
