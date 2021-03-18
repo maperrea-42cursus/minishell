@@ -6,7 +6,7 @@
 /*   By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:03:25 by ancoulon          #+#    #+#             */
-/*   Updated: 2021/03/16 16:34:26 by ancoulon         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:45:17 by ancoulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@
 
 typedef struct	s_prog
 {
-	int		argc;
 	char	**argv;
 	int		in_fd;
 	int		out_fd;
 }				t_prog;
 
-t_llst	*msh_parse(char *line);
+int	msh_parse(char *line,t_llst	**cmds);
 
 #endif
