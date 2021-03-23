@@ -2,6 +2,8 @@
 
 #include "msh/shared.h"
 #include "msh/environement.h"
+#include "carbon/str.h"
+#include "carbon/fmt.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -19,6 +21,10 @@ static int execute(t_prog *prog)
 		msh_exit(1, "fork fail");
 	else if (child_pid == 0)
 	{
+		if (prog->in_fd != STDIN_FILENO)
+			dup2(prog->in_fd, STDIN_FILENO);
+		if (prog->out_fd != STDOUT_FILENO)
+			dup2(prog->out_fd, STDOUT_FILENO);
 		execve(prog->argv[0], prog->argv, envp);
 	}
 	else
@@ -28,17 +34,11 @@ static int execute(t_prog *prog)
 	return (0);
 }
 
-int	msh_interpreter(t_llst *cmds)
+int	msh_interpreter(t_prog *prog)
 {
-	t_llst	*node;
-	t_prog	*prog;
-
-	node = cmds;
-	while (node)
-	{
-		prog = (t_prog *)node->data;
-		execute(prog);
-		node = node->next;
-	}
-	return (0);
+	int	ret;
+	if (!str_cmp(prog->argv[0], "exit"))
+		msh_exit(STDOUT_FILENO, "exit");
+	ret = execute(prog);
+	return (ret);
 }

@@ -8,38 +8,22 @@ int
 {
 	char	*line;
 	int		status;
+	t_prog	*prog;
 
 	(void)argc;
 	(void)argv;
 	msh_env(envp);
-	env_print();
-	printf("--------------------------------\n");
-	char ** envp2 = msh_env_all();
-	while(*envp2)
-	{
-		printf("%s\n", *envp2);
-		envp2++;
-	}
-	status = 1;
-	while (status)
+	status = 0;
+	while (!status)
 	{
 		line = msh_prompt("msh$ ");
-		if (!str_cmp(line, "exit"))
+		msh_parse(line, &prog);
+		msh_interpreter(prog);
+		while (msh_parse(NULL, &prog) > 0)
 		{
-			status = 0;
-			fmt_println(line);
+			msh_interpreter(prog);
 		}
-		else if (!str_cmp(line, "interp"))
-		{
-			status = 0;
-			fmt_println("");
-			msh_interpreter(NULL);
-		}
-		else
-		{
-			fmt_print("input: ");
-			fmt_println(line);
-		}
+		fmt_print("\n");
 	}
 	return (0);
 }

@@ -1,8 +1,8 @@
 #include "msh/parser.h"
 
-int		msh_parse(char *line, t_llst **cmds)
+int		msh_parse(char *line, t_prog **prog)
 {
 	(void)line;
-	(void)cmds;
+	(void)prog;
 	return (0);
 }

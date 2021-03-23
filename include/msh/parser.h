@@ -10,6 +10,6 @@ typedef struct	s_prog
 	int		out_fd;
 }				t_prog;
 
-int	msh_parse(char *line, t_llst **cmds);
+int	msh_parse(char *line, t_prog **prog);
 
 #endif
