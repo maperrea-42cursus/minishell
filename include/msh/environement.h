@@ -18,8 +18,10 @@ char **msh_env_all(void);
 
 t_env *msh_env_get(char *key);
 
+// TODO: implement
 char **msh_env_set(char *key, char*def);
 
+// TODO: remove for production
 void env_print(void);
 
 #endif

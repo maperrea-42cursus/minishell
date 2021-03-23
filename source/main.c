@@ -18,7 +18,7 @@ int
 	{
 		line = msh_prompt("msh$ ");
 		msh_parse(line, &prog);
-		msh_interpreter(prog);
+		msh_interpreter(prog); // will segfault until parser is done
 		while (msh_parse(NULL, &prog) > 0)
 		{
 			msh_interpreter(prog);
