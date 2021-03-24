@@ -4,7 +4,7 @@ LIBDIR		= libcarbon
 LIBNAME		= libcarbon.a
 LIBMAKE		= make -C $(LIBDIR)
 
-CC			= clang
+CC			= clang -g
 \RM			= rm -f
 CFLAGS		= -Wall -Wextra -Werror \
 				-I./include -I./$(LIBDIR)/include \

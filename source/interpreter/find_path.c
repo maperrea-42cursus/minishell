@@ -1,0 +1,60 @@
+#include "msh/interpreter.h"
+
+#include "msh/shared.h"
+#include "msh/environement.h"
+#include "carbon/str.h"
+#include "carbon/llst.h"
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <dirent.h>
+
+static char	*search_dir(DIR *dir, char *cmd)
+{
+	struct dirent	*de;
+
+	if (!dir)
+		return (NULL);
+	de = (struct dirent *)1;
+	while (de)
+	{
+		de = readdir(dir);
+		if (de->d_type == 4 || str_cmp(de->d_name, cmd))
+			continue ;
+		closedir(dir);
+	}
+	closedir(dir);
+	return (NULL);
+}
+
+char	*find_path(char *cmd)
+{
+	t_env			*env;
+	char			*path;
+	char			**strs;
+	size_t			i;
+	char			*tmp;
+
+	path = NULL;
+	env = msh_env_get("PATH");
+	strs = str_split(env->def, ':');
+	if (!strs)
+		msh_exit(1, "nomem");
+	i = 0;
+	while (strs[i] && !path)
+	{
+		printf("strs: %s\n", strs[i]);
+		path = search_dir(opendir(strs[i]), cmd);
+		printf("gaming\n");
+		if (path)
+		{
+			tmp = str_join(strs[i], "/");
+			path = str_join(tmp, cmd);
+			free(tmp);
+			return (path);
+		}
+		i++;
+	}
+	str_split_free(strs);
+	return (path);
+}

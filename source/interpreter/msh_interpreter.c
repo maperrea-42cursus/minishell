@@ -6,6 +6,7 @@
 #include "carbon/fmt.h"
 #include <sys/types.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <stdio.h>
 
@@ -13,7 +14,8 @@ static int execute(t_prog *prog)
 {
 	char	**envp;
 	pid_t	child_pid;
-	int		stat_loc;
+	int		status;
+	int		ret;
 
 	envp = msh_env_all();
 	child_pid = fork();
@@ -25,11 +27,15 @@ static int execute(t_prog *prog)
 			dup2(prog->in_fd, STDIN_FILENO);
 		if (prog->out_fd != STDOUT_FILENO)
 			dup2(prog->out_fd, STDOUT_FILENO);
-		execve(prog->argv[0], prog->argv, envp);
+		ret = execve(prog->argv[0], prog->argv, envp);
+		exit(ret);
 	}
 	else
 	{
-		waitpid(child_pid, &stat_loc, WUNTRACED);
+		waitpid(child_pid, &status, WUNTRACED);
+		printf("Status = %i\n", status);
+		if (prog->in_fd != STDIN_FILENO && prog->in_fd != STDOUT_FILENO && prog->in_fd != STDERR_FILENO)
+			close(prog->in_fd);
 	}
 	return (0);
 }
