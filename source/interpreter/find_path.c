@@ -44,7 +44,6 @@ char	*find_path(char *cmd)
 	i = 0;
 	while (strs[i] && !path)
 	{
-		printf("strs: %s\n", strs[i]);
 		path = search_dir(opendir(strs[i]), cmd);
 		if (path)
 		{
