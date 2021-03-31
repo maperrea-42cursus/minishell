@@ -19,9 +19,10 @@ static char	*search_dir(DIR *dir, char *cmd)
 	while (de)
 	{
 		de = readdir(dir);
-		if (de->d_type == 4 || str_cmp(de->d_name, cmd))
+		if (!de || de->d_type == 4 || str_cmp(de->d_name, cmd))
 			continue ;
 		closedir(dir);
+		return (cmd);
 	}
 	closedir(dir);
 	return (NULL);
@@ -45,12 +46,12 @@ char	*find_path(char *cmd)
 	{
 		printf("strs: %s\n", strs[i]);
 		path = search_dir(opendir(strs[i]), cmd);
-		printf("gaming\n");
 		if (path)
 		{
 			tmp = str_join(strs[i], "/");
-			path = str_join(tmp, cmd);
+			path = str_join(tmp, path);
 			free(tmp);
+			str_split_free(strs);
 			return (path);
 		}
 		i++;

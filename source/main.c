@@ -43,6 +43,5 @@ int
 	// testprog2.in_fd = p[0];
 	// testprog2.out_fd = 1;
 	// msh_interpreter(&testprog2);
-	printf("path: %s\n", find_path("ls"));
 	return (0);
 }
