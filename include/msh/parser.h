@@ -2,6 +2,8 @@
 # define PARSER_H
 
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>			//TODO remove
 #include "carbon/llst.h"
 #include "carbon/str.h"
 
@@ -15,7 +17,6 @@ typedef struct	s_prog
 typedef struct	s_prog_tmp
 {
 	char	*line;
-	int		len;
 	char	**argv;
 	int		in_fd;
 	int		out_fd;
