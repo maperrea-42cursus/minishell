@@ -1,4 +1,5 @@
 #include "msh/interpreter.h"
+#include "private/prv_interpreter.h"
 
 #include "msh/shared.h"
 #include "msh/environement.h"
@@ -10,14 +11,34 @@
 #include <sys/wait.h>
 #include <stdio.h>
 
-static int execute(t_prog *prog)
+static int	is_std_fd(int fd)
+{
+	if (fd == STDIN_FILENO || fd == STDOUT_FILENO || fd == STDERR_FILENO)
+		return (1);
+	else
+		return (0);
+}
+
+static void	clean_fds(t_prog *prog)
+{
+	if (!is_std_fd(prog->in_fd))
+		close(prog->in_fd);
+	if (!is_std_fd(prog->out_fd))
+		close(prog->out_fd);
+}
+
+static int	execute(t_prog *prog)
 {
 	char	**envp;
+	char	*path;
 	pid_t	child_pid;
 	int		status;
 	int		ret;
 
 	envp = msh_env_all();
+	path = path_find(prog->argv[0]);
+	if (!path)
+		return (-1);
 	child_pid = fork();
 	if (child_pid < 0)
 		msh_exit(1, "fork fail");
@@ -27,15 +48,13 @@ static int execute(t_prog *prog)
 			dup2(prog->in_fd, STDIN_FILENO);
 		if (prog->out_fd != STDOUT_FILENO)
 			dup2(prog->out_fd, STDOUT_FILENO);
-		ret = execve(prog->argv[0], prog->argv, envp);
+		ret = execve(path, prog->argv, envp);
 		exit(ret);
 	}
 	else
 	{
 		waitpid(child_pid, &status, WUNTRACED);
-		printf("Status = %i\n", status);
-		if (prog->in_fd != STDIN_FILENO && prog->in_fd != STDOUT_FILENO && prog->in_fd != STDERR_FILENO)
-			close(prog->in_fd);
+		clean_fds(prog);
 	}
 	return (0);
 }

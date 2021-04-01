@@ -28,7 +28,7 @@ static char	*search_dir(DIR *dir, char *cmd)
 	return (NULL);
 }
 
-char	*find_path(char *cmd)
+char	*path_find(char *cmd)
 {
 	t_env			*env;
 	char			*path;

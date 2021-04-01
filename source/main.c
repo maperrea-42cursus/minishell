@@ -29,19 +29,19 @@ int
 	// 	}
 	// 	fmt_print("\n");
 	// }
-	// int	p[2];
-	// printf("pipe ret: %i\n", pipe(p));
-	// char *cmd[] = {"/bin/echo", "Lorem Ipsum\n", NULL};
-	// t_prog testprog = {0};
-	// testprog.argv = cmd;
-	// testprog.in_fd = 0;
-	// testprog.out_fd = p[1];
-	// msh_interpreter(&testprog);
-	// char *cmd2[] = {"/bin/cat", NULL};
-	// t_prog testprog2 = {0};
-	// testprog2.argv = cmd2;
-	// testprog2.in_fd = p[0];
-	// testprog2.out_fd = 1;
-	// msh_interpreter(&testprog2);
+	int	p[2];
+	printf("pipe ret: %i\n", pipe(p));
+	char *cmd[] = {"echo", "Lorem Ipsum\n", NULL};
+	t_prog testprog = {};
+	testprog.argv = cmd;
+	testprog.in_fd = 0;
+	testprog.out_fd = p[1];
+	msh_interpreter(&testprog);
+	char *cmd2[] = {"cat", NULL};
+	t_prog testprog2 = {0};
+	testprog2.argv = cmd2;
+	testprog2.in_fd = p[0];
+	testprog2.out_fd = 1;
+	msh_interpreter(&testprog2);
 	return (0);
 }

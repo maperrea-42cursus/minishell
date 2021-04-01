@@ -3,6 +3,6 @@
 
 # include "msh/interpreter.h"
 
-char	*find_path(char *cmd);
+char	*path_find(char *cmd);
 
 #endif
