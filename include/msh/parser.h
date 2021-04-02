@@ -22,6 +22,13 @@ typedef struct	s_prog_tmp
 	int		out_fd;
 }				t_prog_tmp;
 
+typedef enum	e_state
+{
+	NORMAL,
+	S_QUOTE,
+	D_QUOTE
+}				t_state;
+
 /*
 ** @brief will parse the command given as parameter. if line is NULL, wil return the next command
 ** from the last line sent.

@@ -14,6 +14,19 @@ t_prog_tmp	*init_prog_tmp(char *line, int start, size_t len, int in_fd)
 	return (new);
 }
 
+int		get_prog_len(char *line, int i)
+{
+	t_state	state;
+	
+	state = NORMAL;
+	while (line[i] && ((line[i] != ';' && line[i] != '|') || state != NORMAL))
+	{
+		state = get_state(line, i, state);
+		i++;
+	}
+	return (i)
+}
+
 t_llst	*get_progs(char *line)
 {
 	t_llst	*prog_tmp_lst;
@@ -21,6 +34,7 @@ t_llst	*get_progs(char *line)
 	int 	i;
 	int 	j;
 	int		fd[2];
+	char	state;
 
 	i = 0;
 	*((long *)fd) = 0x000000100000000; // == fd = [0, 1]
@@ -68,15 +82,9 @@ int		msh_parse(char *line, t_prog **prog)
 
 	printf("[[%x]]\n", *line);
 	if (!prog)
-	{
-		printf("!prog\n");
 		return (-1);
-	}
 	else if (!line && !prog_lst)
-	{
-		printf("!line && !prog_lst");
 		return (0);
-	}
 	else if (!line)
 	{
 		*prog = prog_lst->data;
