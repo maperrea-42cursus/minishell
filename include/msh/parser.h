@@ -22,12 +22,19 @@ typedef struct	s_prog_tmp
 	int		out_fd;
 }				t_prog_tmp;
 
-typedef enum	e_state
+typedef enum	e_states
 {
-	NORMAL,
-	S_QUOTE,
-	D_QUOTE
-}				t_state;
+	SQUOTE	= 0b1,
+	DQUOTE	= 0b10,
+	VAR		= 0b100,
+	ESC		= 0b1000,
+	IN		= 0b10000,
+	OUT		= 0b100000,
+	APPEND	= 0b1000000,
+	NEW		= 0b10000000
+}				t_states;
+
+typedef	unsigned int	t_state;
 
 /*
 ** @brief will parse the command given as parameter. if line is NULL, wil return the next command
@@ -40,6 +47,10 @@ typedef enum	e_state
 ** 
 */
 int	msh_parse(char *line, t_prog **prog);
+
+//states
+t_state	get_state(char *str, int i, t_state state);
+
 
 //TODO
 

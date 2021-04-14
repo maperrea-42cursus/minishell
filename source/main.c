@@ -22,6 +22,7 @@ int
 	while (!status)
 	{
 		line = msh_prompt("msh$ ");
+		printf ("\ninput: {{%s}}\n", line);
 		msh_parse(line, &prog);
 	//	msh_interpreter(prog); // will segfault until parser is done
 	//	while (msh_parse(NULL, &prog) > 0)

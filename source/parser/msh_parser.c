@@ -6,7 +6,10 @@ t_prog_tmp	*init_prog_tmp(char *line, int start, size_t len, int in_fd)
 
 	new = malloc(sizeof(t_prog_tmp));
 	if (!new)
+	{
+		printf ("no new\n");
 		return (NULL);
+	}
 	new->line = str_sub(line, start, len);
 	new->argv = NULL;
 	new->in_fd = in_fd;
@@ -14,40 +17,40 @@ t_prog_tmp	*init_prog_tmp(char *line, int start, size_t len, int in_fd)
 	return (new);
 }
 
-int		get_prog_len(char *line, int i)
+int		get_prog_end(char *line, int i)
 {
-	t_state	state;
+	t_state state;
 	
-	state = NORMAL;
-	while (line[i] && ((line[i] != ';' && line[i] != '|') || state != NORMAL))
+	state = 0;
+	while (line[i] && ((line[i] != ';' && line[i] != '|') || state))
 	{
 		state = get_state(line, i, state);
+		printf("%x\n", state);
 		i++;
 	}
-	return (i)
+	return (i);
 }
 
 t_llst	*get_progs(char *line)
 {
 	t_llst	*prog_tmp_lst;
 	t_prog_tmp	*prog_tmp;
-	int 	i;
-	int 	j;
+	int 	start;
+	int 	end;
 	int		fd[2];
-	char	state;
 
-	i = 0;
+	end = -1;
 	*((long *)fd) = 0x000000100000000; // == fd = [0, 1]
 	prog_tmp_lst = NULL;
-	while (line[i])
+	while (end == -1 || line[end])
 	{
-		j = i;
-		while (line[j] && line[j] != ';' && line[j] != '|')
-			j++;
-		prog_tmp = init_prog_tmp(line, i, j - i, fd[0]);
+		start = end + 1;
+		end = get_prog_end(line, start);
+		printf (">>%d %d<<\n", start, end);
+		prog_tmp = init_prog_tmp(line, start, end - start, fd[0]);
 		if (!prog_tmp)
 			continue ;	//TODO maybe return & free? or just return what worked?
-		if (line[j] == '|')
+		if (line[end] == '|')
 		{
 			if (pipe(fd) == -1)
 				continue ; //TODO same as above
@@ -56,7 +59,6 @@ t_llst	*get_progs(char *line)
 			*((long *)fd) = 0x000000100000000;
 		prog_tmp->out_fd = fd[1];
 		llst_push(&prog_tmp_lst, llst_new(prog_tmp));
-		i = j + (line[j] != 0);
 	}
 	return (prog_tmp_lst);
 }
@@ -80,7 +82,7 @@ int		msh_parse(char *line, t_prog **prog)
 	void			*tmp;
 	t_prog_tmp		*oui;
 
-	printf("[[%x]]\n", *line);
+//	printf("[[%x %x]]\n", line[0], line[1]);
 	if (!prog)
 		return (-1);
 	else if (!line && !prog_lst)
