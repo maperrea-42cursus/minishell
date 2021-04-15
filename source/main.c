@@ -22,7 +22,7 @@ int
 	while (!status)
 	{
 		line = msh_prompt("msh$ ");
-		printf ("\ninput: {{%s}}\n", line);
+		printf ("\ninput: %lu {{%s}}\n", str_len(line), line);
 		msh_parse(line, &prog);
 	//	msh_interpreter(prog); // will segfault until parser is done
 	//	while (msh_parse(NULL, &prog) > 0)
@@ -30,6 +30,7 @@ int
 	//		msh_interpreter(prog);
 	//	}
 		fmt_print("\n");
+		free(line);
 	}
 	// int	p[2];
 	// printf("pipe ret: %i\n", pipe(p));

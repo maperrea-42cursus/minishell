@@ -82,7 +82,7 @@ int		msh_parse(char *line, t_prog **prog)
 	void			*tmp;
 	t_prog_tmp		*oui;
 
-//	printf("[[%x %x]]\n", line[0], line[1]);
+	printf("[[%x %x %x]]\n", line[0], line[1], line[2]);
 	if (!prog)
 		return (-1);
 	else if (!line && !prog_lst)
@@ -101,7 +101,7 @@ int		msh_parse(char *line, t_prog **prog)
 		while (prog_tmp_lst)
 		{
 			oui = (t_prog_tmp *)prog_tmp_lst->data;
-			printf("%s %d %d\n", oui->line, oui->in_fd, oui->out_fd);
+			printf("[%s] %d %d\n", oui->line, oui->in_fd, oui->out_fd);
 			prog_tmp_lst = prog_tmp_lst->next;
 		}
 		return (1);
