@@ -7,7 +7,7 @@ t_state	get_state(char *str, int i, t_state state)
 	if (state & SQUOTE)
 	{
 		if (str[i] == '\'')
-			return (state & IN & OUT & APPEND);
+			return (state & (IN | OUT | APPEND));
 		else
 			return (state);
 	}
@@ -20,7 +20,8 @@ t_state	get_state(char *str, int i, t_state state)
 	else if (str[i] == '$')
 		return (state | VAR | NEW);
 	else if (str[i] == '>')
-		return ((((state & ~VAR) | OUT) ^ NEW) | (APPEND * ((state & NEW) == NEW)));
+		return ((((state & ~VAR) | OUT) ^ NEW)
+				| (APPEND * ((state & NEW) == NEW)));
 	else if (str[i] == '<')
 		return ((state & ~VAR) | IN);
 	else if (str[i] == ' ')

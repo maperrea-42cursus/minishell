@@ -12,14 +12,16 @@ typedef struct	s_prog
 	char	**argv;
 	int		in_fd;
 	int		out_fd;
+	struct s_prog	*pipe;
 }				t_prog;
 
 typedef struct	s_prog_tmp
 {
-	char	*line;
 	char	**argv;
 	int		in_fd;
 	int		out_fd;
+	struct s_prog_tmp	*pipe;
+	char	*line;
 }				t_prog_tmp;
 
 typedef enum	e_states
@@ -50,9 +52,6 @@ int	msh_parse(char *line, t_prog **prog);
 
 //states
 t_state	get_state(char *str, int i, t_state state);
-
-
-//TODO
 
 //struct_utils
 void	t_prog_del(void	*prog);

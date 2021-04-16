@@ -6,14 +6,12 @@ t_prog_tmp	*init_prog_tmp(char *line, int start, size_t len, int in_fd)
 
 	new = malloc(sizeof(t_prog_tmp));
 	if (!new)
-	{
-		printf ("no new\n");
 		return (NULL);
-	}
 	new->line = str_sub(line, start, len);
 	new->argv = NULL;
 	new->in_fd = in_fd;
 	new->out_fd = 1;
+	new->pipe = NULL;
 	return (new);
 }
 
@@ -22,10 +20,9 @@ int		get_prog_end(char *line, int i)
 	t_state state;
 	
 	state = 0;
-	while (line[i] && ((line[i] != ';' && line[i] != '|') || state))
+	while (line[i] && (line[i] != ';' || (state & (SQUOTE | DQUOTE | ESC))))
 	{
 		state = get_state(line, i, state);
-		printf("%x\n", state);
 		i++;
 	}
 	return (i);
@@ -46,7 +43,7 @@ t_llst	*get_progs(char *line)
 	{
 		start = end + 1;
 		end = get_prog_end(line, start);
-		printf (">>%d %d<<\n", start, end);
+//		printf (">>%d %d<<\n", start, end);
 		prog_tmp = init_prog_tmp(line, start, end - start, fd[0]);
 		if (!prog_tmp)
 			continue ;	//TODO maybe return & free? or just return what worked?
@@ -71,8 +68,28 @@ void	parse_progs(t_llst *prog_tmp_lst)
 
 t_llst *convert_tmp_lst(t_llst *prog_tmp_lst)
 {
-	(void)prog_tmp_lst;
-	return (NULL);
+	t_llst	*prog_lst;
+	t_prog_tmp	*tmp;
+	t_prog	*new;
+
+	prog_lst = NULL;
+	while (prog_tmp_lst)
+	{
+		new = malloc(sizeof(t_prog));
+		tmp = prog_tmp_lst->data;
+		if (!new)
+			return (NULL); //TODO free previous ones
+		new->argv = malloc(sizeof(char *) * 2);
+		new->argv[0] = tmp->line; //TODO change obviously lol
+		new->argv[1] = NULL;
+		//new->argv = tmp->argv //TODO will be like this
+		new->in_fd = tmp->in_fd;
+		new->out_fd = tmp->out_fd;
+		new->pipe = NULL;
+		llst_push(&prog_lst, llst_new(new));
+		prog_tmp_lst = prog_tmp_lst->next;
+	}
+	return (prog_lst);
 }
 
 int		msh_parse(char *line, t_prog **prog)
@@ -80,9 +97,9 @@ int		msh_parse(char *line, t_prog **prog)
 	static t_llst	*prog_lst;
 	t_llst			*prog_tmp_lst;
 	void			*tmp;
-	t_prog_tmp		*oui;
+//	t_prog_tmp		*oui;
 
-	printf("[[%x %x %x]]\n", line[0], line[1], line[2]);
+//	printf("[[%x %x %x]]\n", line[0], line[1], line[2]);
 	if (!prog)
 		return (-1);
 	else if (!line && !prog_lst)
@@ -91,22 +108,26 @@ int		msh_parse(char *line, t_prog **prog)
 	{
 		*prog = prog_lst->data;
 		tmp = prog_lst->next;
-		llst_destroy(prog_lst, &t_prog_del);
+		free(prog_lst);
 		prog_lst = tmp;
 		return (1);
 	}
 	else
 	{
 		prog_tmp_lst = get_progs(line);
-		while (prog_tmp_lst)
-		{
-			oui = (t_prog_tmp *)prog_tmp_lst->data;
-			printf("[%s] %d %d\n", oui->line, oui->in_fd, oui->out_fd);
-			prog_tmp_lst = prog_tmp_lst->next;
-		}
-		return (1);
+//		while (prog_tmp_lst)
+//		{
+//			oui = (t_prog_tmp *)prog_tmp_lst->data;
+//			printf("[%s] %d %d\n", oui->line, oui->in_fd, oui->out_fd);
+//			prog_tmp_lst = prog_tmp_lst->next;
+//		}
+//		return (1);
 		parse_progs(prog_tmp_lst);
 		prog_lst = convert_tmp_lst(prog_tmp_lst);
+		*prog = prog_lst->data;
+		tmp = prog_lst->next;
+		free(prog_lst);
+		prog_lst = tmp;
 		llst_destroyl(&prog_tmp_lst, &t_prog_tmp_del);
 		return (1);
 	}

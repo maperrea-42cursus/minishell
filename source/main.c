@@ -22,13 +22,27 @@ int
 	while (!status)
 	{
 		line = msh_prompt("msh$ ");
-		printf ("\ninput: %lu {{%s}}\n", str_len(line), line);
+		printf ("\ninput: %lu [%s]\n", str_len(line), line);
 		msh_parse(line, &prog);
+		printf(">%s\n", prog->argv[0]);
+		prog = prog->pipe;
+		while (prog)
+		{
+			printf("	|%s\n", prog->argv[0]);
+			prog = prog->pipe;
+		}
 	//	msh_interpreter(prog); // will segfault until parser is done
-	//	while (msh_parse(NULL, &prog) > 0)
-	//	{
-	//		msh_interpreter(prog);
-	//	}
+		while (msh_parse(NULL, &prog) > 0)
+		{
+			printf(">%s\n", prog->argv[0]);
+			prog = prog->pipe;
+			while (prog)
+			{
+				printf("	|%s\n", prog->argv[0]);
+				prog = prog->pipe;
+			}
+//			msh_interpreter(prog);
+		}
 		fmt_print("\n");
 		free(line);
 	}
