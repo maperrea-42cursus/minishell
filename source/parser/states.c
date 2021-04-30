@@ -3,29 +3,29 @@
 t_state	get_state(char *str, int i, t_state state)
 {
 	if (state & ESC)
-		return (state & ~ESC);
+		return ((state & ~ESC) | CHANGE);
 	if (state & SQUOTE)
 	{
 		if (str[i] == '\'')
-			return (state & (IN | OUT | APPEND));
+			return (state & (IN | OUT | APPEND | CHANGE | SKIP));
 		else
-			return (state);
+			return (state & ~CHANGE);
 	}
 	if (str[i] == '\\')
-		return ((state & ~VAR) | ESC);
+		return ((state & ~VAR) | ESC | CHANGE | SKIP);
 	else if (str[i] == '\'')
 		return ((state & ~VAR) ^ (SQUOTE * ((state & DQUOTE) != DQUOTE)));
 	else if (str[i] == '\"')
 		return ((state & ~VAR) ^ DQUOTE);
 	else if (str[i] == '$')
-		return (state | VAR | NEW);
+		return (state | VAR | CHANGE | SKIP);
 	else if (str[i] == '>')
-		return ((((state & ~VAR) | OUT) ^ NEW)
-				| (APPEND * ((state & NEW) == NEW)));
+		return (((state & ~VAR) | OUT) |
+				((CHANGE | APPEND) * ((state & OUT) == OUT)) | SKIP);
 	else if (str[i] == '<')
-		return ((state & ~VAR) | IN);
+		return ((state & ~VAR) | IN | SKIP);
 	else if (str[i] == ' ')
 		return ((state & ~VAR) * ((state & DQUOTE) == DQUOTE));
 	else
-		return (state & ~NEW);
+		return (state & ~CHANGE);
 }

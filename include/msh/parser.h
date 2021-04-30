@@ -9,31 +9,32 @@
 
 typedef struct	s_prog
 {
-	char	**argv;
-	int		in_fd;
-	int		out_fd;
+	char			**argv;
+	int				in_fd;
+	int				out_fd;
 	struct s_prog	*pipe;
 }				t_prog;
 
 typedef struct	s_prog_tmp
 {
-	char	**argv;
-	int		in_fd;
-	int		out_fd;
+	char				**argv;
+	int					in_fd;
+	int					out_fd;
 	struct s_prog_tmp	*pipe;
-	char	*line;
+	char				*line;
 }				t_prog_tmp;
 
 typedef enum	e_states
 {
-	SQUOTE	= 0b1,
-	DQUOTE	= 0b10,
-	VAR		= 0b100,
-	ESC		= 0b1000,
-	IN		= 0b10000,
-	OUT		= 0b100000,
-	APPEND	= 0b1000000,
-	NEW		= 0b10000000
+	SQUOTE	= 0b1,			//single quote
+	DQUOTE	= 0b10,			//double quote
+	ESC		= 0b100,		//escaped character
+	VAR		= 0b1000,		//variable
+	IN		= 0b10000,		//input redirection
+	OUT		= 0b100000,		//output redirection
+	APPEND	= 0b1000000,	//output with appending (>>)
+	CHANGE	= 0b10000000,	//state just changed
+	SKIP	= 0b100000000	//don't parse current character
 }				t_states;
 
 typedef	unsigned int	t_state;

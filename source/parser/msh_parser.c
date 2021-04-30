@@ -1,6 +1,6 @@
 #include "msh/parser.h"
 
-t_prog_tmp	*init_prog_tmp(char *line, int start, size_t len, int in_fd)
+t_prog_tmp	*init_prog_tmp(char *line, int start, size_t len)
 {
 	t_prog_tmp	*new;
 
@@ -9,7 +9,7 @@ t_prog_tmp	*init_prog_tmp(char *line, int start, size_t len, int in_fd)
 		return (NULL);
 	new->line = str_sub(line, start, len);
 	new->argv = NULL;
-	new->in_fd = in_fd;
+	new->in_fd = 0;
 	new->out_fd = 1;
 	new->pipe = NULL;
 	return (new);
@@ -28,33 +28,54 @@ int		get_prog_end(char *line, int i)
 	return (i);
 }
 
+int		get_prog_pipe(char *line, int i)
+{
+	t_state state;
+	
+	state = 0;
+	while (line[i] && (line[i] != '|' || (state & (SQUOTE | DQUOTE | ESC))))
+	{
+		state = get_state(line, i, state);
+		i++;
+	}
+	return (i);
+}
+
+void	cut_pipes(t_prog_tmp *prog)
+{
+	t_prog_tmp	*new;
+	int			end;
+
+	end = get_prog_pipe(prog->line, 0);
+}
+
 t_llst	*get_progs(char *line)
 {
 	t_llst	*prog_tmp_lst;
 	t_prog_tmp	*prog_tmp;
 	int 	start;
 	int 	end;
-	int		fd[2];
+//	int		fd[2];
 
 	end = -1;
-	*((long *)fd) = 0x000000100000000; // == fd = [0, 1]
+//	*((long *)fd) = 0x0000000100000000; // == fd = [0, 1]
 	prog_tmp_lst = NULL;
 	while (end == -1 || line[end])
 	{
 		start = end + 1;
 		end = get_prog_end(line, start);
 //		printf (">>%d %d<<\n", start, end);
-		prog_tmp = init_prog_tmp(line, start, end - start, fd[0]);
+		prog_tmp = init_prog_tmp(line, start, end - start);
 		if (!prog_tmp)
 			continue ;	//TODO maybe return & free? or just return what worked?
-		if (line[end] == '|')
-		{
-			if (pipe(fd) == -1)
-				continue ; //TODO same as above
-		}
-		else
-			*((long *)fd) = 0x000000100000000;
-		prog_tmp->out_fd = fd[1];
+//		if (line[end] == '|')
+//		{
+//			if (pipe(fd) == -1)
+//				continue ; //TODO same as above
+//		}
+//		else
+//			*((long *)fd) = 0x0000000100000000;
+//		prog_tmp->out_fd = fd[1];
 		llst_push(&prog_tmp_lst, llst_new(prog_tmp));
 	}
 	return (prog_tmp_lst);
